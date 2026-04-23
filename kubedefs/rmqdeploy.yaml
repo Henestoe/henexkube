@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: henexrmq
+  labels:
+    app: henexrmq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: henexrmq
+  template:
+    metadata:
+      labels:
+        app: henexrmq
+    spec:
+      containers:
+      - name: henexdb
+        image: rabbitmq
+        ports:
+        - name: henexrmq-port
+          containerPort: 5672
+        env:
+        - name: RABBITMQ_DEFAULT_PASS
+          valueFrom:
+            secretKeyRef:
+              name: app-secret
+              key: rmq-password
+        - name: RABBITMQ_DEFAULT_USER
+          value: guest"

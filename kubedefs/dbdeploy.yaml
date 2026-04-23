@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: henexdb
+  labels:
+    app: henexdb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: henexdb
+  template:
+    metadata:
+      labels:
+        app: henexdb
+    spec:
+      containers:
+      - name: henexdb
+        image: henex/henexdb
+        volumemounts:
+        - name: henexdb-data
+          mountPath: /var/lib/mysql
+        ports:
+        - name: henexdb-port
+          containerPort: 3306
+        env:
+        - name: MY_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secret
+              key: db-password
+      volumes:
+        - name: henexdb-data
+          persistentVolumeClaim:
+            claimName: db-pvc-claim
+          
+      initContainers: 
+        - name: busybox
+          image: busybox:latest
+          args: ["rm", "-rf", "/var/lib/mysql/lost+found"]
+          volumemounts:
+            - name: henexdb-data
+              mountPath: var/lib/mysql
+ 

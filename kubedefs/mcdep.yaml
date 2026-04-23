@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: henexmc
+  labels:
+    app: henexmc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: henexmc
+  template:
+    metadata:
+      labels:
+        app: henexmc
+    spec:
+      containers:
+      - name: henexmc
+        image: memecached:latest
+        ports:
+        - name: henexmc-port
+          containerPort: 11211
