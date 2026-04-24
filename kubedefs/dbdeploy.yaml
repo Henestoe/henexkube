@@ -17,7 +17,7 @@ spec:
       containers:
       - name: henexdb
         image: henex/henexdb
-        volumemounts:
+        volumeMounts:
         - name: henexdb-data
           mountPath: /var/lib/mysql
         ports:
@@ -38,7 +38,7 @@ spec:
         - name: busybox
           image: busybox:latest
           args: ["rm", "-rf", "/var/lib/mysql/lost+found"]
-          volumemounts:
+          volumeMounts:
             - name: henexdb-data
               mountPath: var/lib/mysql
  
